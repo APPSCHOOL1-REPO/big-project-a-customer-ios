@@ -65,6 +65,7 @@ struct MyPageInfoView: View {
                 // 좋아요, 구매내역, 쿠폰함 등 이후 다른 뷰들과 연결될 그리드
                 LazyVGrid(columns: columns, spacing: 19) {
                     ForEach(Array(sampleActions.enumerated()), id: \.offset) { (idx, action) in
+                        // 로그인 상태가 아닐 때 세부 마이페이지로 못 가도록 분기처리
                         if signupViewModel.loginRequestState == .notLoggedIn {
                             Button {
                                 loginAlertShowing.toggle()

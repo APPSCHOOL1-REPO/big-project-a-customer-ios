@@ -66,7 +66,7 @@ struct MyPageInfoEditView: View {
                                 .frame(width: 20.5)
                                 .accentColor(.gray)
                         }
-                        // password가 비어있지 않으면서, 6자리 이상일 때 체크 아이콘 띄움.
+                        // password가 비어있지 않으면서, 비밀번호 조건(영문, 숫자, 특수문자 포함 8~20)에 맞을 때 체크표시
                         if !newPassword.isEmpty && checkPasswordRule(password: newPassword) {
                             Image(systemName: "checkmark.circle")
                                 .resizable()
@@ -110,6 +110,7 @@ struct MyPageInfoEditView: View {
                         }
                         
                         Button(action: {
+                            // 비밀번호 보임/숨김을 설정함.
                             isSecuredPasswordCheck.toggle()
                         }) {
                             Image(systemName: self.isSecuredPasswordCheck ? "eye.slash" : "eye")
@@ -168,6 +169,7 @@ struct MyPageInfoEditView: View {
                 // alert: 입력한 두 비밀번호가 일치하지 않을 때 알림
                 // ok버튼을 누르면 텍스트필드 초기화
                 .modifier(PasswordAlertModifier(showingAlert: $showingAlert, password: $newPassword, password_2: $checkPassword))
+                // 비밀번호 변경 시, 로그아웃을 알리는 alert
                 .alert("비밀번호가 변경되어, 보안상 고객님의 모든 기기에서 로그아웃 됩니다.", isPresented: $showingLogoutAlert) {
                     Button("Ok") {
                         signupViewModel.requestUserSignOut()
@@ -179,7 +181,8 @@ struct MyPageInfoEditView: View {
             Divider()
                 .padding(.vertical, 10)
             
-            //MARK: - 주소를 변경하는 부분
+            //MARK: - 회원정보를 변경하는 부분
+            
             Text("기본정보 수정")
                 .font(.title3)
                 .bold()
@@ -222,18 +225,19 @@ struct MyPageInfoEditView: View {
                 }
                 
             }
+            // 기존에 저장되어있는 회원정보가 있다면 바로 수정 가능하도록 TextField의 Binding 값에 할당
             .onAppear {
                 newPhoneNumber = signupViewModel.currentUser?.phoneNumber ?? ""
                 newAddress = signupViewModel.currentUser?.userAddress ?? ""
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 20)
+            .padding(20)
             
-            // 주소 변경 버튼
+            // 회원정보 수정 버튼
             Button {
                 // 입력한 텍스트가 띄어쓰기나, 엔터 버튼이 눌렸을 때 버튼이 작동되지 않는 조건
                 if newAddress.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 && newPhoneNumber.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
                     signupViewModel.updateUserInfo(userAddress: newAddress, phoneNumber: newPhoneNumber, user: signupViewModel.currentUser!)
+                    // 정보가 수정되면 main mypage로 이동
                     navStack = .init()
                 }
             } label: {

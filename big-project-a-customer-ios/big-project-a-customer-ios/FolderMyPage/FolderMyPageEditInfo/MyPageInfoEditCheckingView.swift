@@ -55,9 +55,9 @@ struct MyPageInfoEditCheckingView: View {
             
             // 입력한 비밀번호가 일치할 시 네비게이션 링크를 보여주고,
             // 불일치할 시 버튼을 보여주고, alert를 띄운다
-            
             Button {
                 Task {
+                    // 로그인 성공 유무에 따라 Bool값을 return하는 reAuthLoginIn을 사용하여 비밀번호가 맞는지 확인
                     isLogedIn = await signupViewModel.reAuthLoginIn(withEmail: signupViewModel.currentUser?.userEmail ?? "", withPassword: password)
                     showingAlert = !isLogedIn
                 }
