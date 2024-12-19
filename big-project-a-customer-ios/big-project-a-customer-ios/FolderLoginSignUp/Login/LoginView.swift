@@ -70,7 +70,7 @@ struct LoginView: View {
                             .frame(width: 60)
                             .foregroundColor(.accentColor)
                             .padding(.bottom, 20)
-                        Text("안녕하세요.\n전자상점입니다.")
+                        Text("안녕하세요.\n찌릿샵입니다.")
                             .font(.title3)
                             .bold()
                         Text("회원 서비스 이용을 위해 로그인 해주세요.")
